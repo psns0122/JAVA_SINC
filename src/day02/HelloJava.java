@@ -1,4 +1,4 @@
-package dat02;
+package day02;
 
 /*
 1. "Hello Java" 문자열을 출력하는 HelloJava 클래스를 작성하세요.
