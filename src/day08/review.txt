@@ -1,0 +1,147 @@
+1. 참조 타입에 대한 설명으로 틀린 것은 무엇입니까?
+-> 4번. 참조 타입은 null 값으로 초기화할 수 없다.
+
+2. 자바에서 메모리 사용에 대한 설명으로 틀린 것은 무엇입니까?
+-> 3번. 참조되지 않는 객체는 프로그램에서 직접 소멸 코드를 작성하는 것이 좋다. (가비지 컬렉터가 처리해줌)
+
+3. String 타입에 대한 설명으로 틀린 것은 무엇입니까?
+-> 2번. String 타입의 문자열 비교는 ==을 사용해야 한다. (equals 함수를 사용)
+
+4. 배열을 생성하는 방법으로 틀린 것은 무엇입니까?
+-> 2번. 자바에서 배열은 객체이므로 변수선언만 있을 수 없고 몇개의 배열 공간을 차지할 것인지 정보를 받아, 배열 객체를 힙에 생성해야한다.
+
+5. 배열의 기본 초기값에 대한 설명으로 틀린 것은 무엇입니까?
+-> 3번. boolean 타입 배열 항목의 기본 초기값은 true이다. (flase다)
+
+6. 다음은 배열 길이를 출력하는 코드입니다. 실행 결과를 작성해보세요.
+-> 출력결과
+3
+5
+
+7. 주어진 배열 항목에서 최대값을 출력하는 코드를 작성해보세요(for문 이용)
+-> 소스코드 Test07.java
+
+import java.io.*;
+public class Test07 {
+    public static void main(String[] args) throws IOException {
+        int[] array = { 1, 5, 3, 8, 2 };
+        int max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (max < array[i]) {
+                max = array[i];
+            }
+        }
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        bw.write(String.valueOf(max));
+        bw.flush();
+    }
+}
+
+8. 주어진 배열 항목의 전체 합과 평균을 구해 출력하는 코드를 작성해보세요(중첩for문 이용)
+-> 소스코드 Test08.java
+
+import java.io.*;
+public class Test08 {
+    public static void main(String[] args) throws IOException {
+        int[][] array = {
+                {95, 86},
+                {83, 92, 96},
+                {78, 83, 93, 87, 88}
+        };
+
+        int totalCount = 0;
+        int totalSum = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                totalCount++;
+                totalSum += array[i][j];
+            }
+        }
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        bw.write("total sum : " + String.valueOf(totalSum) + "\n");
+        bw.write("total average : " + String.format("%.1f", (double)totalSum / totalCount));
+        bw.flush();
+    }
+}
+
+9. 학생들의 점수를 분석하는 프로그램을 만들려고 합니다. 키보드로부터 학생 수와 각 학생들의 점수를 입력받고 최고 점수 및 평균 점수를 출력하는 코드를 작성해보세요.
+(반복은 while, 입출력은 Buffer 객체를 사용하세요)
+> 소스코드 Test09.java
+
+import java.io.*;
+public class Test09 {
+    public static void main(String[] args) throws IOException, NullPointerException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int num = 0; // 학생수
+        int[] scores = new int[0]; // 점수를 저장할 변수 (학생수 입력 후 동적할당)
+
+        boolean isBreak = false;
+
+        do {
+            bw.write("-------------------------------------------------\n"); bw.flush();
+            bw.write("1.학생수 | 2.점수입력 | 3.점수리스트 | 4.분석 | 5.종료\n"); bw.flush();
+            bw.write("-------------------------------------------------\n"); bw.flush();
+            bw.write("선택> "); bw.flush();
+            int userInput = Integer.parseInt(br.readLine());
+
+            switch(userInput) {
+                case 1: // 학생수
+                    bw.write("학생수> "); bw.flush();
+                    num = Integer.parseInt(br.readLine());
+
+                    // 입력받은 학생수로 점수 배열 동적할당
+                    scores = new int[num];
+                    break;
+
+                case 2: // 점수입력
+                    if (scores.length == 0) {
+                        bw.write("! 학생수를 먼저 입력해주세요 !\n");
+                        continue;
+                    }
+                    for (int i = 0; i < num; i++) {
+                        bw.write("scores[" + String.valueOf(i) + "]> "); bw.flush();
+                        scores[i] = Integer.parseInt(br.readLine());
+                    }
+                    break;
+
+                case 3: // 점수리스트
+                    if (scores.length == 0) {
+                        bw.write("! 학생수를 먼저 입력해주세요 !\n");
+                        continue;
+                    }
+                    for (int i = 0; i < num; i++) {
+                        bw.write("scores[" + String.valueOf(i) + "]: " + String.valueOf(scores[i]) + "\n"); bw.flush();
+                    }
+                    break;
+
+                case 4: // 분석
+                    if (scores.length == 0) {
+                        bw.write("! 학생수를 먼저 입력해주세요 !\n");
+                        continue;
+                    }
+                    int max = scores[0]; // 최고점수
+                    int sum = scores[0]; // 합계
+                    for (int i = 1; i < num; i++) {
+                        if (scores[i] > max) max = scores[i];
+                        sum += scores[i];
+                    }
+                    bw.write("최고 점수: " + max + "\n"); bw.flush();
+                    bw.write("평균 점수: " + String.format("%.1f", (double)sum/num) + "\n"); bw.flush();
+                    break;
+
+                case 5: // 종료
+                    bw.write("프로그램 종료\n"); bw.flush();
+                    isBreak = true;
+                    break;
+
+                default:
+                    bw.write("\n"); bw.flush();
+            }
+        } while(!isBreak);
+    }
+}
